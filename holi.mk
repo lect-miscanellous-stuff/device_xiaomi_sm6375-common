@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+LOCAL_PATH := device/xiaomi/sm6375-common
+
 # Enable project quotas and casefolding for emulated storage without sdcardfs
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
@@ -103,10 +105,6 @@ PRODUCT_PACKAGES += \
     android.hardware.ir@1.0-impl \
     android.hardware.ir@1.0-service
 
-# Device-specific settings
-PRODUCT_PACKAGES += \
-    XiaomiParts
-
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@3.0-impl-qti-display \
@@ -165,7 +163,6 @@ PRODUCT_PACKAGES += \
 
 # GPS
 PRODUCT_PACKAGES += \
-    android.hardware.gnss@2.1-impl-qti \
     android.hardware.gnss@2.1-service-qti
 
 PRODUCT_PACKAGES += \
@@ -367,7 +364,6 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
-    CarrierConfigOverlay \
     libjson \
     librmnetctl
 
@@ -378,22 +374,24 @@ PRODUCT_PACKAGES += \
     android.hardware.secure_element@1.2.vendor
 
 # Rootdir
-PRODUCT_PACKAGES += \
-    init.batterysecret.rc \
-    init.class_main.sh \
-    init.mi.btmac.sh \
-    init.kernel.post_boot.sh \
-    init.kernel.post_boot-blair.sh \
-    init.kernel.post_boot-holi.sh \
-    init.qcom.sh \
-    init.qcom.post_boot.sh \
-    init.qcom.rc \
-    init.qti.kernel.rc \
-    init.qti.ufs.rc \
-    init.target.rc \
-    init.xiaomi.rc \
-    ueventd.qcom.rc \
-    vendor_modprobe.sh
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/etc/init.batterysecret.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.batterysecret.rc \
+    $(LOCAL_PATH)/rootdir/etc/init.xiaomi.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.xiaomi.rc \
+    $(LOCAL_PATH)/rootdir/etc/init.qti.ufs.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.qti.ufs.rc \
+    $(LOCAL_PATH)/rootdir/etc/init.qcom.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.qcom.rc \
+    $(LOCAL_PATH)/rootdir/etc/ueventd.qcom.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/ueventd.qcom.rc \
+    $(LOCAL_PATH)/rootdir/etc/init.qti.kernel.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.qti.kernel.rc \
+    $(LOCAL_PATH)/rootdir/etc/init.target.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.target.rc
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/bin/init.qcom.post_boot.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qcom.post_boot.sh \
+    $(LOCAL_PATH)/rootdir/bin/init.kernel.post_boot-holi.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.kernel.post_boot-holi.sh \
+    $(LOCAL_PATH)/rootdir/bin/init.kernel.post_boot-blair.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.kernel.post_boot-blair.sh \
+    $(LOCAL_PATH)/rootdir/bin/init.kernel.post_boot.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.kernel.post_boot.sh \
+    $(LOCAL_PATH)/rootdir/bin/init.qcom.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qcom.sh \
+    $(LOCAL_PATH)/rootdir/bin/vendor_modprobe.sh:$(TARGET_COPY_OUT_VENDOR)/bin/vendor_modprobe.sh \
+    $(LOCAL_PATH)/rootdir/bin/init.mi.btmac.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.mi.btmac.sh \
+    $(LOCAL_PATH)/rootdir/bin/init.class_main.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.class_main.sh
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/charger_fstab.qti:$(TARGET_COPY_OUT_VENDOR)/etc/charger_fstab.qti \
@@ -478,7 +476,6 @@ PRODUCT_PACKAGES += \
     libwpa_client \
     vendor.qti.hardware.wifi.hostapd@1.2.vendor \
     vendor.qti.hardware.wifi.supplicant@2.1.vendor \
-    WifiOverlay \
     wpa_cli \
     wpa_supplicant \
     wpa_supplicant.conf
@@ -490,4 +487,3 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libnl \
     libwfdaac_vendor
-
